@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Stats</title>
+    <link rel="stylesheet" href="https://ajusa.github.io/ajcss/dist/aj.min.css">
+    <script src="https://unpkg.com/frappe-charts@0.0.8/dist/frappe-charts.min.iife.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+
+<body>
+    <div class="container mt4" id="app">
+        <h2>Categories</h2>
+        <div v-for="cat in categories" class="mv3 vh-25 bg-purple white grow" @click="redirect(cat)">
+        	<h3 class="ttu tracked tc vc b">{{cat}}</h3>
+        </div>
+    </div>
+</body>
+<script>
+var app = new Vue({
+    el: '#app',
+    data: {
+        categories: ["Literature", "History", "Science", "Fine Arts", "Religion", "Mythology", "Philosophy", "Social Science", "Geography", "Current Events", "Trash"],
+        colors: ["blue", "purple", "black", "red", "teal", "dark-orange"],
+    },
+    methods: {
+    	redirect: function(cat){
+    		window.location.href = "/stats.html#"+encodeURIComponent(cat);
+    	}
+    }
+})
+</script>
+
+</html>
