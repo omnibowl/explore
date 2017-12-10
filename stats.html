@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Stats</title>
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
+    <script src="https://unpkg.com/frappe-charts@0.0.8/dist/frappe-charts.min.iife.js"></script>
+</head>
+
+<body>
+    <div class="container grid-lg mt-2">
+        <h1>Stats</h1>
+        <div id="chart">
+        </div>
+    </div>
+</body>
+<script>
+var filename = window.location.hash.substr(1) + ".json"
+var request = new XMLHttpRequest();
+request.open('GET', filename, true);
+
+request.onload = function() {
+    if (request.status >= 200 && request.status < 400) {
+        // Success!
+        var i, j, temparray, chunk = 5;
+        labels = []
+        for (var i = 0; i < 100 + 1; i+= chunk) {
+        	labels.push(i.toString())
+        }
+        vals = [0]
+        map = JSON.parse(request.responseText);
+        data = map.stats
+        count = 0
+        for (i = 0, j = 100; i < j; i += chunk) {
+            temparray = data.slice(i, i + chunk);
+            for (var k = temparray.length - 1; k >= 0; k--) {
+            	count += temparray[k].count
+            }
+            vals.push(Math.round(count*100/map.count))
+            // do whatever
+        }
+        var d = {
+            labels: labels,
+
+            datasets: [{
+                title: "% of "+ window.location.hash.substr(1),
+                values: vals
+            }]
+        };
+
+        var chart = new Chart({
+            parent: "#chart", // or a DOM element
+            title: window.location.hash.substr(1),
+            data: d,
+            type: 'line', // or 'line', 'scatter', 'pie', 'percentage'
+            height: 300,
+
+            colors: ['#7cd6fd'],
+            // hex-codes or these preset colors;
+            // defaults (in order):
+            // ['light-blue', 'blue', 'violet', 'red',
+            // 'orange', 'yellow', 'green', 'light-green',
+            // 'purple', 'magenta', 'grey', 'dark-grey']
+        });
+    }
+};
+request.send();
+</script>
+
+</html>
