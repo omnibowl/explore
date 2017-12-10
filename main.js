@@ -35,7 +35,7 @@ function getStats(category) {
         });
         temp = ArrNoDupe(temp)
         for (var i = temp.length - 1; i >= 0; i--) {
-            if (temp[i].length < 2) { continue; }
+            if (temp[i].length < 2 || temp[i] == "The" || temp[i]=="\"The") { continue; }
             map.stats.push({ title: temp[i], count: 1 })
         }
         for (var i = map.stats.length - 1; i >= 0; i--) {
